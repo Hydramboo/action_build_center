@@ -20,6 +20,8 @@ jobs:
       run: chmod +x gradlew
     - name: mkdir
       run: mkdir out
+    - name: Clone bilibili-kotlin-sdk
+      run: cd libs && git clone https://dgithub.xyz/SpaceXC/Bilibili-Kotlin-SDK.git
     - name: set up JDK 17
       uses: actions/setup-java@v3
       with:
