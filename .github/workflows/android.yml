@@ -15,9 +15,7 @@ jobs:
 
     steps:
     - name: Git clone BiliClient
-      run: cd .. && sudo rm -rf action_build_biliclient && git clone -b develop https://gitee.com/RobinNotBad/BiliClient.git action_build_biliclient
-    - name: ls
-      run: ls -l /home/runner/work/action_build_biliclient/action_build_biliclient
+      run: cd .. && sudo rm -rf action_build_center && git clone -b develop https://gitee.com/RobinNotBad/BiliClient.git action_build_center
     - name: Grant execute permission for gradlew
       run: chmod +x gradlew
     - name: mkdir
@@ -36,7 +34,7 @@ jobs:
       uses: actions/upload-artifact@v3
       with:
           name: app
-          path: out/app-release.*   
+          path: out/app-release.apk 
    
   build-release-huawei:
 
@@ -44,9 +42,7 @@ jobs:
 
     steps:
     - name: Git clone BiliClient
-      run: cd .. && sudo rm -rf action_build_biliclient && git clone -b huawei_special https://gitee.com/RobinNotBad/BiliClient.git action_build_biliclient
-    - name: ls
-      run: ls -l /home/runner/work/action_build_biliclient/action_build_biliclient
+      run: cd .. && sudo rm -rf action_build_center && git clone -b huawei_special https://gitee.com/RobinNotBad/BiliClient.git action_build_center
     - name: Grant execute permission for gradlew
       run: chmod +x gradlew
     - name: mkdir
@@ -65,4 +61,4 @@ jobs:
       uses: actions/upload-artifact@v3
       with:
           name: app-huawei
-          path: out/app-release-huawei.*   
+          path: out/app-release-huawei.apk
