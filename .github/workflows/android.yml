@@ -31,7 +31,7 @@ jobs:
           ./gradlew :app:assembleRelease
           mv app/build/outputs/apk/release/app-release-unsigned.apk out/app-release.apk
     - name: Upload APK(release)
-      uses: actions/upload-artifact@v3
+      uses: actions/upload-artifact@v4
       with:
           name: app
           path: out/app-release.apk 
@@ -58,7 +58,7 @@ jobs:
           ./gradlew :app:assembleRelease
           mv app/build/outputs/apk/release/app-release-unsigned.apk out/app-release-huawei.apk
     - name: Upload APK(release)
-      uses: actions/upload-artifact@v3
+      uses: actions/upload-artifact@v4
       with:
           name: app-huawei
           path: out/app-release-huawei.apk
