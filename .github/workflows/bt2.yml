@@ -1,4 +1,4 @@
-name: Android CI
+name: BiliTerm2
 
 on: 
   workflow_dispatch:
