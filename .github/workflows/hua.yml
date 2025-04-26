@@ -17,9 +17,9 @@ jobs:
     - name: Git clone
       run: cd .. && sudo rm -rf action_build_center && git clone https://github.com/RJMultiDev/huamark.git action_build_center
     - name: Grant execute permission for gradlew
-      run: chmod +x gradlew
+      run: chmod +x src/gradlew
     - name: mkdir
-      run: mkdir out
+      run: mkdir src/out
     - name: set up JDK 11
       uses: actions/setup-java@v3
       with:
@@ -33,5 +33,5 @@ jobs:
     - name: Upload APK(release)
       uses: actions/upload-artifact@v4
       with:
-          name: app
+        name: app
           path: *
