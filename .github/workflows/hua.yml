@@ -30,7 +30,6 @@ jobs:
       run: |
           cd src
           ./gradlew :app:assembleRelease
-          steps:
     - uses: ilharp/sign-android-release@v2
       name: Sign app APK
       id: sign_app
