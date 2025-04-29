@@ -30,8 +30,19 @@ jobs:
       run: |
           cd src
           ./gradlew :app:assembleRelease
-    - name: Upload APK(release)
-      uses: actions/upload-artifact@v4
+          steps:
+    - uses: ilharp/sign-android-release@v2
+      name: Sign app APK
+      id: sign_app
       with:
-        name: app
-        path: src/app/build/outputs/apk/release/*
+          releaseDir: src/app/build/outputs/apk/release
+          signingKey: ${{ secrets.SIGNKEY}}
+          keyAlias: ${{ secrets.ALIAS }}
+          keyStorePassword: ${{ secrets.PASSWORD }}
+          keyPassword: ${{ secrets.PASSWORD }}
+          buildToolsVersion: 36.0.0
+    - uses: actions/upload-artifact@v4
+      name: Upload signed APK
+      with:
+          name: app-signed
+          path: ${{steps.sign_app.outputs.signedFile}}
