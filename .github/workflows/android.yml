@@ -42,7 +42,7 @@ jobs:
     - uses: actions/upload-artifact@v4
       name: Upload signed APK
       with:
-          name: app-signed
+          name: app-release
           path: ${{steps.sign_app.outputs.signedFile}}
    
   build-release-huawei:
@@ -78,5 +78,5 @@ jobs:
     - uses: actions/upload-artifact@v4
       name: Upload signed APK
       with:
-          name: app-signed
+          name: app-huawei
           path: ${{steps.sign_app.outputs.signedFile}}
