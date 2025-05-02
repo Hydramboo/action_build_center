@@ -29,12 +29,21 @@ jobs:
     - name: Build with Gradle
       run: |
           ./gradlew :app:assembleRelease
-          mv app/build/outputs/apk/release/app-release-unsigned.apk out/app-release.apk
-    - name: Upload APK(release)
-      uses: actions/upload-artifact@v4
+    - uses: ilharp/sign-android-release@v2
+      name: Sign app APK
+      id: sign_app
       with:
-          name: app
-          path: out/app-release.apk 
+          releaseDir: app/build/outputs/apk/release
+          signingKey: ${{ secrets.SIGNKEY}}
+          keyAlias: ${{ secrets.ALIAS }}
+          keyStorePassword: ${{ secrets.PASSWORD }}
+          keyPassword: ${{ secrets.PASSWORD }}
+          buildToolsVersion: 36.0.0
+    - uses: actions/upload-artifact@v4
+      name: Upload signed APK
+      with:
+          name: app-signed
+          path: ${{steps.sign_app.outputs.signedFile}}
    
   build-release-huawei:
 
@@ -56,9 +65,18 @@ jobs:
     - name: Build with Gradle
       run: |
           ./gradlew :app:assembleRelease
-          mv app/build/outputs/apk/release/app-release-unsigned.apk out/app-release-huawei.apk
-    - name: Upload APK(release)
-      uses: actions/upload-artifact@v4
+    - uses: ilharp/sign-android-release@v2
+      name: Sign app APK
+      id: sign_app
       with:
-          name: app-huawei
-          path: out/app-release-huawei.apk
+          releaseDir: app/build/outputs/apk/release
+          signingKey: ${{ secrets.SIGNKEY}}
+          keyAlias: ${{ secrets.ALIAS }}
+          keyStorePassword: ${{ secrets.PASSWORD }}
+          keyPassword: ${{ secrets.PASSWORD }}
+          buildToolsVersion: 36.0.0
+    - uses: actions/upload-artifact@v4
+      name: Upload signed APK
+      with:
+          name: app-signed
+          path: ${{steps.sign_app.outputs.signedFile}}
