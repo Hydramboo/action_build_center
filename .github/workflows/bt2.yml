@@ -28,10 +28,9 @@ jobs:
         cache: gradle
     - name: Build with Gradle
       run: |
-          ./gradlew :app:assembleRelease --info
-          mv app/build/outputs/apk/release/app-release-unsigned.apk out/app-release.apk
+          ./gradlew :app:assembleRelease 
     - name: Upload APK(release)
       uses: actions/upload-artifact@v4
       with:
           name: app
-          path: out/app-release.apk 
+          path: app/build/outputs/apk/release/
