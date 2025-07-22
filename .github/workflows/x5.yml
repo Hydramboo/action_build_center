@@ -6,16 +6,14 @@ on:
 jobs:
   build:
       runs-on: ubuntu-latest
-
       steps:
-
 
     # 将内容推送到目标仓库
       - name: Checkout target repo
         uses: actions/checkout@v4
         with:
           repository: Hydramboo/Browser  # 目标仓库地址
-          token: 
+          token: ${{ secrets.GH }}
           persist-credentials: false
           path: target # 克隆到另一路径
           fetch-depth: 0
