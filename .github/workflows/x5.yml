@@ -15,12 +15,8 @@ jobs:
           repository: Hydramboo/Browser  # 目标仓库地址
           token: ${{ secrets.GH }}
           persist-credentials: false
-          path: target # 克隆到另一路径
+          #path: target # 克隆到另一路径
           fetch-depth: 0
-
-      - name: Copy files to target repository
-        run: cp -r source/* target/
-
 
       - name: Grant execute permission for gradlew
         run: chmod +x gradlew
