@@ -1,46 +1,56 @@
-name: TBS
+name: Build
 
-on: 
-  workflow_dispatch:
-  push:
-  schedule:
-    - cron: '0 12 * * *'
-    - cron: '59 23 * * *'
+on:
+  worklow_dispatch:
 
 jobs:
-  
-  build-release:
+  build:
+      runs-on: ubuntu-latest
 
-    runs-on: ubuntu-latest
+      steps:
 
-    steps:
-    - name: Git clone
-      run: cd .. && sudo rm -rf action_build_center && git clone https://github.com/RJMultiDev/X5Demo.git action_build_center
-    - name: Grant execute permission for gradlew
-      run: chmod +x ./gradlew
-    - name: mkdir
-      run: mkdir ./out
-    - name: set up JDK 11
-      uses: actions/setup-java@v3
-      with:
-        java-version: '11'
-        distribution: 'temurin'
-        cache: gradle
-    - name: Build with Gradle
-      run: |
-          ./gradlew :app:assembleRelease
-    - uses: ilharp/sign-android-release@v2
-      name: Sign app APK
-      id: sign_app
-      with:
-          releaseDir: app/build/outputs/apk/release
-          signingKey: ${{ secrets.SIGNKEY}}
-          keyAlias: ${{ secrets.ALIAS }}
-          keyStorePassword: ${{ secrets.PASSWORD }}
-          keyPassword: ${{ secrets.PASSWORD }}
-          buildToolsVersion: 36.0.0
-    - uses: actions/upload-artifact@v4
-      name: Upload signed APK
-      with:
-          name: app-signed
-          path: ${{steps.sign_app.outputs.signedFile}}
+
+    # 将内容推送到目标仓库
+      - name: Checkout target repo
+        uses: actions/checkout@v4
+        with:
+          repository: Hydramboo/Browser  # 目标仓库地址
+          token: 
+          persist-credentials: false
+          path: target # 克隆到另一路径
+          fetch-depth: 0
+
+      - name: Copy files to target repository
+        run: cp -r source/* target/
+
+
+      - name: Grant execute permission for gradlew
+        run: chmod +x gradlew
+
+      - name: Set up JDK 17
+        uses: actions/setup-java@v4
+        with:
+          java-version: '17'
+          distribution: 'temurin'
+          cache: gradle
+
+      - name: Cache Gradle Global Caches
+        uses: actions/cache@v4
+        with:
+          path: |
+             build
+             .gradle
+          key: gradle-global-cache
+          restore-keys: |
+            gradle-global-cache
+
+      - name: Build with Gradle (Release)
+        run: ./gradlew :app:assembleRelease --daemon --parallel 
+
+
+      - name: Upload Release APK
+        uses: actions/upload-artifact@v4
+        with:
+          name: app
+          path: app/build/outputs/apk/release/app-release.apk
+          retention-days: 7
