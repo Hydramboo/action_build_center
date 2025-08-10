@@ -15,7 +15,7 @@ jobs:
 
     steps:
     - name: Git clone BiliClient
-      run: cd .. && sudo rm -rf action_build_center && git clone -b develop https://gitee.com/RobinNotBad/BiliClient.git action_build_center
+      run: cd .. && sudo rm -rf action_build_center && git clone -b develop https://github.com/RJMultiDev/BiliClient.git action_build_center
     - name: Grant execute permission for gradlew
       run: chmod +x gradlew
     - name: mkdir
