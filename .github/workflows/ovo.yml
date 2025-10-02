@@ -14,14 +14,15 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-    - name: Git clone
-      run: cd .. && sudo rm -rf action_build_center && git clone https://github.com/RJMultiDev/ono.git action_build_center
-    - name: Git clone qqstub
-      run: cd libs/stub && git clone https://github.com/LuckyPray/qq-stub.git
+    - name: Checkout target repo
+      uses: actions/checkout@v4
+      with:
+        repository: RJMultiDev/ono
+        path: target
+        fetch-depth: 0
+        submodules: recursive
     - name: Grant execute permission for gradlew
-      run: chmod +x gradlew
-    - name: mkdir
-      run: mkdir out
+      run: chmod +x ./target/gradlew
     - name: set up JDK
       uses: actions/setup-java@v3
       with:
@@ -30,12 +31,12 @@ jobs:
         cache: gradle
     - name: Build with Gradle
       run: |
-          ./gradlew :app:assembleRelease
+          ./target/gradlew :app:assembleRelease
     - uses: ilharp/sign-android-release@v2
       name: Sign app APK
       id: sign_app
       with:
-          releaseDir: app/build/outputs/apk/release
+          releaseDir: target/app/build/outputs/apk/release
           signingKey: ${{ secrets.SIGNKEY}}
           keyAlias: ${{ secrets.ALIAS }}
           keyStorePassword: ${{ secrets.PASSWORD }}
